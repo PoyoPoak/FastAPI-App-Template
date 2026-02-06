@@ -1,101 +1,161 @@
-# Type a clear one-line summary here (aim for under 60 characters)
+# Write your one-line summary here
 
 
-# --- EXPANDED CONTEXT (delete sections that don't apply) ---
+# ═══════════════════════════════════════════════════════════════════
+# Tell the story of this commit by answering these questions:
+# ═══════════════════════════════════════════════════════════════════
 
-# The problem this solves:
-# 
-
-
-# How this changes the codebase:
-# 
+# What problem were you solving?
 
 
-# Where in the stack:
-#   - backend/app/api/        (FastAPI routes)
-#   - backend/app/models/     (SQLModel database models)  
-#   - backend/app/core/       (settings, security, dependencies)
-#   - frontend/src/routes/    (TanStack Router pages)
-#   - frontend/src/components/ (React UI components)
-#   - frontend/src/client/    (auto-generated API client)
-#   - compose.yml             (Docker services)
-#   - .github/workflows/      (CI automation)
-#
 
 
-# Validation completed:
-#   [ ] docker compose watch runs without errors
-#   [ ] pytest passes
-#   [ ] Manually tested in browser
-# 
+# What files did you change and how?
 
 
-# Related issue or discussion:
-#   (example: Closes #42, Relates to discussion #128)
-# 
 
 
-# ====================================================================
-# COMMIT PREFIX GUIDE - Use one of these at the start of your summary:
-# ====================================================================
-# 
-# api:         Modified backend API endpoints or route handlers
-# model:       Changed SQLModel schemas or database structure  
-# auth:        Authentication/authorization logic (JWT, sessions, etc)
-# ui:          Frontend visual components or styling (shadcn/Tailwind)
-# route:       TanStack Router configuration or page routes
-# compose:     Docker Compose service definitions
-# migration:   Alembic database migration scripts
-# test:        Pytest or Playwright test additions/fixes
-# workflow:    GitHub Actions CI/CD pipelines
-# hook:        React hooks or pre-commit hooks (prek)
-# config:      Settings in core/config.py or environment files
-# client:      OpenAPI-generated frontend API client updates
-# email:       Email templates or Mailcatcher integration
-# traefik:     Reverse proxy routing rules
-# doc:         README, development.md, or inline documentation
-# script:      Helper scripts in /scripts or /backend/scripts
-# dep:         Package updates (pyproject.toml, package.json, etc)
-# fix:         Bug repair (be specific about what broke)
-# security:    Vulnerability patch or security hardening
-# perf:        Performance optimization
-# refactor:    Code restructuring without behavior change
+# How did you prove it works?
+# (docker compose watch? pytest? manual testing?)
+
+
+
+
+# Which part of the codebase?
+# - backend/app/api/routes/{items,users,login,private,utils}.py
+# - backend/app/models/*.py
+# - backend/app/core/{config,security,db}.py
+# - backend/alembic/versions/*.py
+# - frontend/src/routes/{login,signup,reset-password,_layout/**}.tsx
+# - frontend/src/components/**/*.tsx
+# - frontend/src/client/*.ts (auto-generated OpenAPI client)
+# - frontend/src/hooks/*.ts
+# - compose.yml or compose.override.yml
+# - .github/workflows/*.yml
+
+
+
+
+# Connect to an issue? (example: "fixes #123" or "related to #45")
+
+
+
+
+# ═══════════════════════════════════════════════════════════════════
+# PREFIX YOUR SUMMARY - Pick one that fits:
+# ═══════════════════════════════════════════════════════════════════
 #
-# ====================================================================
-# EXAMPLES of good commit messages for THIS project:
-# ====================================================================
+# For backend/app/api/routes/ changes:
+#   routes/items → "items route: your summary"
+#   routes/users → "users route: your summary"
+#   routes/login → "login route: your summary"
 #
-# api: Add pagination to user list endpoint in routes/users.py
+# For backend/app/models/ changes:
+#   "models: your summary"
 #
-# The user management page was timing out with 10k+ users.
-# 
-# Added skip/limit query params to GET /api/v1/users using 
-# SQLModel's offset() and limit(). Updated frontend client
-# to handle paginated responses.
+# For backend/app/core/ changes:
+#   "config: your summary"
+#   "security: your summary"
+#   "database: your summary"
 #
-# Validation: Created 50k test users, verified page loads in <2s
+# For Alembic migrations:
+#   "alembic: your summary"
 #
-# ---
+# For frontend/src/routes/ changes:
+#   "login page: your summary"
+#   "signup page: your summary"
+#   "settings page: your summary"
+#   "dashboard: your summary"
 #
-# ui: Implement user profile avatar upload component
+# For frontend/src/components/ changes:
+#   "components: your summary"
 #
-# Users couldn't customize their profile picture.
+# For frontend/src/client/ changes:
+#   "api client: your summary"
 #
-# Added ImageUpload component using shadcn/ui with drag-drop,
-# preview, and size validation. Integrated with existing
-# /api/v1/users/me/avatar endpoint.
+# For frontend/src/hooks/ changes:
+#   "hooks: your summary"
 #
-# Validation: Tested upload/delete with various file formats
+# For compose.yml changes:
+#   "docker services: your summary"
 #
-# ---
+# For .github/workflows/ changes:
+#   "ci pipeline: your summary"
 #
-# compose: Upgrade PostgreSQL from 15 to 16 in services
+# For documentation:
+#   "docs: your summary"
 #
-# Postgres 16 offers better query performance for our workload.
+# For dependencies:
+#   "backend deps: your summary"
+#   "frontend deps: your summary"
 #
-# Updated compose.yml to use postgres:16-alpine, verified
-# migrations run cleanly with Alembic.
+# For bug fixes:
+#   "bugfix: your summary" (be specific about what was broken)
 #
-# Validation: Rebuilt stack, ran full test suite
+# For performance:
+#   "performance: your summary"
 #
-# ====================================================================
+# For security patches:
+#   "security: your summary"
+#
+# For code cleanup without behavior change:
+#   "refactor: your summary"
+#
+# ═══════════════════════════════════════════════════════════════════
+# REAL EXAMPLES from this FastAPI stack:
+# ═══════════════════════════════════════════════════════════════════
+#
+# users route: add email verification status to profile response
+#
+# Problem: Frontend needed to show whether a user verified their email,
+# but the GET /api/v1/users/me endpoint wasn't returning that field.
+#
+# Changed: Modified backend/app/api/routes/users.py to include
+# email_verified boolean in UserPublic schema response.
+#
+# Tested: Hit the endpoint via curl after logging in, confirmed
+# email_verified appears. Frontend dashboard now displays the badge.
+#
+# ───────────────────────────────────────────────────────────────────
+#
+# login page: implement password visibility toggle
+#
+# Problem: Users couldn't see what they typed when entering passwords
+# on the login form, leading to frequent typos.
+#
+# Changed: Added eye icon button to frontend/src/routes/login.tsx
+# that toggles password input between type="password" and type="text".
+# Used lucide-react Eye and EyeOff icons.
+#
+# Tested: Manually tested clicking toggle on /login page, verified
+# password becomes visible/hidden correctly.
+#
+# ───────────────────────────────────────────────────────────────────
+#
+# docker services: increase PostgreSQL shared_buffers for performance
+#
+# Problem: Database queries were slow with the default 128MB buffer.
+# App now has 100k+ rows and needs more memory for caching.
+#
+# Changed: Modified compose.yml to set PostgreSQL shared_buffers
+# to 512MB via command args. Also bumped container memory limit.
+#
+# Tested: Rebuilt stack with docker compose down && docker compose up,
+# ran pgbench to confirm 3x faster SELECT performance. Alembic
+# migrations still work fine.
+#
+# ───────────────────────────────────────────────────────────────────
+#
+# alembic: add full-text search indexes to items table
+#
+# Problem: Searching items by title was doing slow sequential scans
+# on 50k+ rows. Queries took 5+ seconds.
+#
+# Changed: Created alembic migration 2024_02_06_add_item_search_idx
+# that adds GIN index on title column for fast ILIKE queries.
+#
+# Tested: Ran migration on local DB via docker compose exec backend
+# alembic upgrade head. Checked in Adminer that index exists. Search
+# queries now return in <100ms.
+#
+# ═══════════════════════════════════════════════════════════════════
