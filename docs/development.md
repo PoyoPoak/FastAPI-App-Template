@@ -180,6 +180,26 @@ ruff-format..............................................................Passed
 biome check..............................................................Passed
 ```
 
+## Git Commit and PR Templates
+
+This repository includes templates to help maintain consistency across commits and pull requests.
+
+### Pull Request Template
+
+When creating a new pull request, GitHub automatically populates the description with a template. Fill in the relevant sections to help reviewers understand your changes.
+
+### Commit Message Template
+
+To use the commit message template in your local environment:
+
+```bash
+git config commit.template .github/.gitmessage
+```
+
+After configuration, running `git commit` will open your editor with the template pre-filled, following the conventional commit format.
+
+For detailed information about using these templates, see [.github/TEMPLATES.md](../.github/TEMPLATES.md).
+
 ## URLs
 
 The production or staging URLs would use these same paths, but with your own domain.
