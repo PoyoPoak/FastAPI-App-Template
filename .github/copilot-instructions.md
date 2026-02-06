@@ -138,18 +138,6 @@ docker compose up -d db mailcatcher backend frontend
 docker compose down -v --remove-orphans
 ```
 
-### Creating Alembic Migrations
-
-After modifying SQLModel models in `backend/app/models.py`:
-
-```bash
-docker compose exec backend bash
-alembic revision --autogenerate -m "Description of change"
-alembic upgrade head
-```
-
-Commit the generated migration files in `backend/app/alembic/versions/`.
-
 ## CI Checks on Pull Requests
 
 Every PR triggers these workflows that **must all pass**:
@@ -176,6 +164,27 @@ The `.pre-commit-config.yaml` defines these hooks executed in order:
 7. `ruff format` — Python formatting
 8. `generate-frontend-sdk` — re-generates `frontend/src/client/` when backend files change
 
+## Workflow Protocols
+
+### Creating Alembic Migrations Protocol
+**Critical Workflow When Modifying Models:**
+1.  **Modify** `SQLModel` classes in `backend/app/models.py`.
+2.  **Verify Imports**: Ensure the module defining your models is imported by Alembic. In this repo, `backend/app/alembic/env.py` already imports `app.models`, so new models in that file are picked up automatically. If you add models in a new module, import that module in `env.py`.
+3.  **Generate**: Run `docker compose exec backend alembic revision --autogenerate -m "message"`.
+4.  **Verify**: Check the generated file in `backend/app/alembic/versions/` to ensure `upgrade()` contains actual SQL changes.
+5.  **Apply**: `docker compose exec backend alembic upgrade head`.
+
+### Playwright Agent Protocol
+
+When asked to write or fix E2E tests, adopt the Planner/Generator/Healer pattern:
+
+- **Planner**: Before writing code, analyze the `frontend/` logic and propose a test plan in Markdown (e.g., `frontend/tests/specs/checkout.md`). Create the `frontend/tests/specs/` folder if needed.
+- **Generator**: Write tests using semantic locators only (role, label, text, test id).
+	- GOOD: `page.getByRole('button', { name: 'Submit' })`
+	- BAD: `page.locator('div > .btn-primary')`
+- **Healer**: If a test fails in CI, assume the UI changed. Analyze the HTML dump and propose an updated locator rather than rewriting the logic.
+- **Seeding/Auth**: Use the Playwright setup project in `frontend/tests/auth.setup.ts` and its storage state at `playwright/.auth/user.json` for authenticated tests. Do not script full login UI flows in every test unless the test is explicitly about login behavior.
+
 ## Key Conventions
 
 - **Python**: Target Python 3.10. Ruff enforces pycodestyle, pyflakes, isort, flake8-bugbear, comprehensions, pyupgrade, no-print, no-unused-args. No `print()` statements allowed (T201 rule).
@@ -194,3 +203,8 @@ The `.pre-commit-config.yaml` defines these hooks executed in order:
 - **`uv sync --all-packages`** must be run from the repo root (not `backend/`) to resolve the workspace correctly. Running `uv sync` from `backend/` also works for backend-only deps.
 - **`bun install`** must be run from the repo root to install the workspace. Running from `frontend/` also works but the root lockfile (`bun.lock`) is the source of truth.
 - **PR label requirement**: CI requires one of: `breaking, security, feature, bug, refactor, upgrade, docs, lang-all, internal`. PRs without a label will fail the Labels check.
+
+# Boundaries
+- 🚫 NEVER use `pip`, `poetry`, `npm`, or `yarn`.
+- ✅ ALWAYS use `uv` for Python and `bun` for JavaScript/TypeScript.
+- 🚫 NEVER edit `uv.lock` or `bun.lock` manually.
