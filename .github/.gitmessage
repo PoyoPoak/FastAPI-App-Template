@@ -1,0 +1,101 @@
+# Type a clear one-line summary here (aim for under 60 characters)
+
+
+# --- EXPANDED CONTEXT (delete sections that don't apply) ---
+
+# The problem this solves:
+# 
+
+
+# How this changes the codebase:
+# 
+
+
+# Where in the stack:
+#   - backend/app/api/        (FastAPI routes)
+#   - backend/app/models/     (SQLModel database models)  
+#   - backend/app/core/       (settings, security, dependencies)
+#   - frontend/src/routes/    (TanStack Router pages)
+#   - frontend/src/components/ (React UI components)
+#   - frontend/src/client/    (auto-generated API client)
+#   - compose.yml             (Docker services)
+#   - .github/workflows/      (CI automation)
+#
+
+
+# Validation completed:
+#   [ ] docker compose watch runs without errors
+#   [ ] pytest passes
+#   [ ] Manually tested in browser
+# 
+
+
+# Related issue or discussion:
+#   (example: Closes #42, Relates to discussion #128)
+# 
+
+
+# ====================================================================
+# COMMIT PREFIX GUIDE - Use one of these at the start of your summary:
+# ====================================================================
+# 
+# api:         Modified backend API endpoints or route handlers
+# model:       Changed SQLModel schemas or database structure  
+# auth:        Authentication/authorization logic (JWT, sessions, etc)
+# ui:          Frontend visual components or styling (shadcn/Tailwind)
+# route:       TanStack Router configuration or page routes
+# compose:     Docker Compose service definitions
+# migration:   Alembic database migration scripts
+# test:        Pytest or Playwright test additions/fixes
+# workflow:    GitHub Actions CI/CD pipelines
+# hook:        React hooks or pre-commit hooks (prek)
+# config:      Settings in core/config.py or environment files
+# client:      OpenAPI-generated frontend API client updates
+# email:       Email templates or Mailcatcher integration
+# traefik:     Reverse proxy routing rules
+# doc:         README, development.md, or inline documentation
+# script:      Helper scripts in /scripts or /backend/scripts
+# dep:         Package updates (pyproject.toml, package.json, etc)
+# fix:         Bug repair (be specific about what broke)
+# security:    Vulnerability patch or security hardening
+# perf:        Performance optimization
+# refactor:    Code restructuring without behavior change
+#
+# ====================================================================
+# EXAMPLES of good commit messages for THIS project:
+# ====================================================================
+#
+# api: Add pagination to user list endpoint in routes/users.py
+#
+# The user management page was timing out with 10k+ users.
+# 
+# Added skip/limit query params to GET /api/v1/users using 
+# SQLModel's offset() and limit(). Updated frontend client
+# to handle paginated responses.
+#
+# Validation: Created 50k test users, verified page loads in <2s
+#
+# ---
+#
+# ui: Implement user profile avatar upload component
+#
+# Users couldn't customize their profile picture.
+#
+# Added ImageUpload component using shadcn/ui with drag-drop,
+# preview, and size validation. Integrated with existing
+# /api/v1/users/me/avatar endpoint.
+#
+# Validation: Tested upload/delete with various file formats
+#
+# ---
+#
+# compose: Upgrade PostgreSQL from 15 to 16 in services
+#
+# Postgres 16 offers better query performance for our workload.
+#
+# Updated compose.yml to use postgres:16-alpine, verified
+# migrations run cleanly with Alembic.
+#
+# Validation: Rebuilt stack, ran full test suite
+#
+# ====================================================================

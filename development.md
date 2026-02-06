@@ -131,6 +131,16 @@ Depending on your workflow, you could want to exclude it from Git, for example i
 
 One way to do it could be to add each environment variable to your CI/CD system, and updating the `compose.yml` file to read that specific env var instead of reading the `.env` file.
 
+## Git Workflow and Templates
+
+The repository includes templates for commits and pull requests to maintain consistency. See [.github/TEMPLATE_SETUP.md](.github/TEMPLATE_SETUP.md) for setup instructions.
+
+To configure the commit message template:
+
+```bash
+git config commit.template .github/.gitmessage
+```
+
 ## Pre-commits and code linting
 
 we are using a tool called [prek](https://prek.j178.dev/) (modern alternative to [Pre-commit](https://pre-commit.com/)) for code linting and formatting.
