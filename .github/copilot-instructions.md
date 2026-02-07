@@ -174,6 +174,15 @@ The `.pre-commit-config.yaml` defines these hooks executed in order:
 4.  **Verify**: Check the generated file in `backend/app/alembic/versions/` to ensure `upgrade()` contains actual SQL changes.
 5.  **Apply**: `docker compose exec backend alembic upgrade head`.
 
+### Cross-Stack Dependency Protocol
+
+If you modify `backend/app/api/` or `backend/app/models.py`:
+
+1. If a backend dev server is running, restart it (or let hot-reload pick up changes).
+2. Run `bash ./scripts/generate-client.sh` to regenerate `frontend/src/client/`.
+3. Commit the generated changes in `frontend/src/client/`.
+4. Fix any resulting type errors in `frontend/src/`.
+
 ### Playwright Agent Protocol
 
 When asked to write or fix E2E tests, adopt the Planner/Generator/Healer pattern:
