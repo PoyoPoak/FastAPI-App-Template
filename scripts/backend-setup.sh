@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
-VENV_DIR="$REPO_ROOT/venv"
+VENV_DIR="$REPO_ROOT/.venv"
 
 prompt_and_wait() {
     local message="$1"
@@ -111,4 +111,4 @@ cd "$REPO_ROOT"
 uv sync --all-packages
 
 echo "Backend virtual environment and dependencies are ready."
-echo "To activate the environment, run: source venv/Scripts/activate (Windows) or source venv/bin/activate (Unix)"
+echo "To activate the environment, run: source .venv/Scripts/activate (Windows) or source .venv/bin/activate (Unix)"
