@@ -439,10 +439,13 @@ def test_access_token_with_invalid_credentials(client: TestClient) -> None:
     assert response.status_code == 400
 ```
 
-### Testing Validation Errors
+### Testing Validation Errors (422)
 
+Test invalid data that fails Pydantic validation:
+
+**Empty/Missing Required Fields**:
 ```python
-def test_create_item_invalid_data(
+def test_create_item_empty_title(
     client: TestClient, superuser_token_headers: dict[str, str]
 ) -> None:
     data = {"title": ""}  # Empty string fails min_length=1
@@ -452,6 +455,36 @@ def test_create_item_invalid_data(
         json=data,
     )
     assert response.status_code == 422  # Validation error
+    content = response.json()
+    assert "detail" in content
+```
+
+**Wrong Data Types**:
+```python
+def test_create_item_wrong_type(
+    client: TestClient, superuser_token_headers: dict[str, str]
+) -> None:
+    data = {"title": 123}  # Integer instead of string
+    response = client.post(
+        f"{settings.API_V1_STR}/items/",
+        headers=superuser_token_headers,
+        json=data,
+    )
+    assert response.status_code == 422
+```
+
+**Field Length Violations**:
+```python
+def test_create_item_title_too_long(
+    client: TestClient, superuser_token_headers: dict[str, str]
+) -> None:
+    data = {"title": "x" * 300}  # Exceeds max_length=255
+    response = client.post(
+        f"{settings.API_V1_STR}/items/",
+        headers=superuser_token_headers,
+        json=data,
+    )
+    assert response.status_code == 422
 ```
 
 ### Testing Pagination
@@ -473,7 +506,90 @@ def test_read_items_with_pagination(
     content = response.json()
     assert len(content["data"]) == 2
     assert content["count"] >= 5
+    
+    # Get second page
+    response = client.get(
+        f"{settings.API_V1_STR}/items/?skip=2&limit=2",
+        headers=superuser_token_headers,
+    )
+    assert response.status_code == 200
+    content = response.json()
+    assert len(content["data"]) == 2
 ```
+
+### Testing Unique Constraints (400)
+
+Test duplicate data when unique constraints exist:
+
+```python
+def test_create_user_duplicate_email(
+    client: TestClient, superuser_token_headers: dict[str, str]
+) -> None:
+    # Create first user
+    email = "test@example.com"
+    data = {"email": email, "password": "password123"}
+    response = client.post(
+        f"{settings.API_V1_STR}/users/",
+        headers=superuser_token_headers,
+        json=data,
+    )
+    assert response.status_code == 200
+    
+    # Try to create duplicate
+    response = client.post(
+        f"{settings.API_V1_STR}/users/",
+        headers=superuser_token_headers,
+        json=data,
+    )
+    assert response.status_code == 400
+    content = response.json()
+    assert "already exists" in content["detail"].lower()
+```
+
+**Reference**: `backend/tests/api/routes/test_users.py` for duplicate email tests
+
+### Testing Unauthenticated Requests (401)
+
+Test endpoints without authentication token:
+
+```python
+def test_create_item_unauthenticated(client: TestClient) -> None:
+    data = {"title": "Test Item", "description": "Test"}
+    response = client.post(
+        f"{settings.API_V1_STR}/items/",
+        json=data,
+        # No headers - unauthenticated
+    )
+    assert response.status_code == 401
+    content = response.json()
+    assert content["detail"] == "Not authenticated"
+```
+
+### Testing Query Parameters and Filters
+
+If your endpoint supports filtering or search:
+
+```python
+def test_read_items_with_filter(
+    client: TestClient, superuser_token_headers: dict[str, str], db: Session
+) -> None:
+    # Create items with different attributes
+    item1 = create_random_item(db)
+    item2 = create_random_item(db)
+    
+    # Test filter query parameter
+    response = client.get(
+        f"{settings.API_V1_STR}/items/?status=active",
+        headers=superuser_token_headers,
+    )
+    assert response.status_code == 200
+    content = response.json()
+    # Verify filtering works correctly
+    for item in content["data"]:
+        assert item["status"] == "active"
+```
+
+**Note**: Only add filter tests if your endpoint actually implements filtering.
 
 ### Testing CRUD Operations Directly
 

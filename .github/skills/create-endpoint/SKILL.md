@@ -140,7 +140,7 @@ def create_{thing}(*, session: Session, {thing}_in: {Thing}Create, owner_id: uui
 
 ### Required Test Cases
 
-Create `backend/tests/api/routes/test_{things}.py` with these 11 test functions:
+Create `backend/tests/api/routes/test_{things}.py` with these **11 basic test functions**:
 
 1. `test_create_{thing}` - successful creation
 2. `test_read_{thing}` - successful single read
@@ -153,6 +153,28 @@ Create `backend/tests/api/routes/test_{things}.py` with these 11 test functions:
 9. `test_delete_{thing}` - successful deletion
 10. `test_delete_{thing}_not_found` - 404 handling
 11. `test_delete_{thing}_not_enough_permissions` - 403 handling
+
+### Additional Test Cases (As Needed)
+
+Depending on your resource's features, also consider these test cases:
+
+**Validation Testing (422 errors)**:
+- `test_create_{thing}_invalid_data` - Empty/invalid fields, wrong data types
+- `test_update_{thing}_invalid_data` - Invalid update payloads
+
+**Unique Constraints (400 errors)**:
+- `test_create_{thing}_duplicate` - Attempting to create duplicate when unique constraint exists
+- Example: duplicate email, duplicate slug, etc.
+
+**Pagination Testing**:
+- `test_read_{things}_with_pagination` - Test skip/limit parameters
+- Verify `count` field accuracy, proper result limiting
+
+**Authentication/Authorization (401 errors)**:
+- `test_create_{thing}_unauthenticated` - Request without auth token
+- `test_read_{things}_unauthenticated` - List access without auth (if protected)
+
+**Note**: Only add tests for features that actually exist in your endpoint. Don't test pagination if your endpoint doesn't support it. See `backend-testing` skill for detailed examples of each pattern.
 
 ### Test Pattern
 
