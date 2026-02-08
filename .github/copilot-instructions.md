@@ -166,6 +166,10 @@ The `.pre-commit-config.yaml` defines these hooks executed in order:
 
 ## Workflow Protocols
 
+### CI .env Handling
+
+Workflow jobs must not rely on a committed `.env`. Any job that runs `docker compose` must create a `.env` during the workflow run (typically by copying `.env-template` and overriding required keys with GitHub Actions secrets). Local development still uses the developer's `.env` file. Github Actions secrets and variables will always be made as secrets, never as variables, to prevent accidental exposure in logs.
+
 ### Creating Alembic Migrations Protocol
 **Critical Workflow When Modifying Models:**
 1.  **Modify** `SQLModel` classes in `backend/app/models.py`.
