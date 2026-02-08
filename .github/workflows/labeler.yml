@@ -11,6 +11,7 @@ on:
 
 jobs:
   labeler:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     permissions:
       contents: read
       pull-requests: write
@@ -23,6 +24,7 @@ jobs:
   check-labels:
     needs:
       - labeler
+    if: ${{ github.actor != 'dependabot[bot]' }}
     permissions:
       pull-requests: read
     runs-on: ubuntu-latest
