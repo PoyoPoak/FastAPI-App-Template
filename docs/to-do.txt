@@ -1,10 +1,10 @@
 Temporary To-Do List
 
 High Priority
-TODO: 
+TODO:
 
 Medium Priority
-TODO: 
+TODO:
 
 Low Priority
-TODO:  
+TODO:
