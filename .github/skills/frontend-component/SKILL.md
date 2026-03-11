@@ -147,7 +147,7 @@ function get{Thing}sQueryOptions() {
 
 function Component() {
   const { data: {things} } = useSuspenseQuery(get{Thing}sQueryOptions())
-  
+
   return <div>{things}.data.map(...)</div>
 }
 ```
@@ -170,9 +170,9 @@ function Component() {
     queryFn: UsersService.readUserMe,
     enabled: isLoggedIn(),  // Conditional fetching
   })
-  
+
   if (!user) return null
-  
+
   return <div>{user.full_name}</div>
 }
 ```
@@ -425,7 +425,7 @@ import useAuth from "@/hooks/useAuth"
 
 function Component() {
   const { user, logout } = useAuth()
-  
+
   return <div>{user?.full_name}</div>
 }
 ```
@@ -441,7 +441,7 @@ import useCustomToast from "@/hooks/useCustomToast"
 
 function Component() {
   const { showSuccessToast, showErrorToast } = useCustomToast()
-  
+
   showSuccessToast("Operation successful")
   showErrorToast("Operation failed")
 }
@@ -454,7 +454,7 @@ import useCopyToClipboard from "@/hooks/useCopyToClipboard"
 
 function Component() {
   const { copyToClipboard } = useCopyToClipboard()
-  
+
   const handleCopy = () => {
     copyToClipboard("text to copy")
   }
@@ -468,7 +468,7 @@ import { useMobile } from "@/hooks/useMobile"
 
 function Component() {
   const isMobile = useMobile()
-  
+
   return isMobile ? <MobileView /> : <DesktopView />
 }
 ```

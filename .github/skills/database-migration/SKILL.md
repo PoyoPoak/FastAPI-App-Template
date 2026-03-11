@@ -358,17 +358,17 @@ def downgrade() -> None:
 def upgrade() -> None:
     # Add column as nullable
     op.add_column('item', sa.Column('category_id', sa.UUID(), nullable=True))
-    
+
     # Create default category for existing items
     op.execute("""
-        INSERT INTO category (id, name) 
+        INSERT INTO category (id, name)
         VALUES ('00000000-0000-0000-0000-000000000000', 'Uncategorized')
         ON CONFLICT DO NOTHING
     """)
-    
+
     # Update existing rows
     op.execute("UPDATE item SET category_id = '00000000-0000-0000-0000-000000000000' WHERE category_id IS NULL")
-    
+
     # Make non-nullable and add foreign key
     op.alter_column('item', 'category_id', nullable=False)
     op.create_foreign_key('fk_item_category', 'item', 'category', ['category_id'], ['id'])

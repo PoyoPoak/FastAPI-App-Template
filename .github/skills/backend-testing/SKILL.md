@@ -496,7 +496,7 @@ def test_read_items_with_pagination(
     # Create 5 items
     for _ in range(5):
         create_random_item(db)
-    
+
     # Get first page
     response = client.get(
         f"{settings.API_V1_STR}/items/?skip=0&limit=2",
@@ -506,7 +506,7 @@ def test_read_items_with_pagination(
     content = response.json()
     assert len(content["data"]) == 2
     assert content["count"] >= 5
-    
+
     # Get second page
     response = client.get(
         f"{settings.API_V1_STR}/items/?skip=2&limit=2",
@@ -534,7 +534,7 @@ def test_create_user_duplicate_email(
         json=data,
     )
     assert response.status_code == 200
-    
+
     # Try to create duplicate
     response = client.post(
         f"{settings.API_V1_STR}/users/",
@@ -576,7 +576,7 @@ def test_read_items_with_filter(
     # Create items with different attributes
     item1 = create_random_item(db)
     item2 = create_random_item(db)
-    
+
     # Test filter query parameter
     response = client.get(
         f"{settings.API_V1_STR}/items/?status=active",

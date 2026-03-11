@@ -289,7 +289,7 @@ export const Route = createFileRoute("/_layout/{things}")({
 
 function {Thing}sTableContent() {
   const { data: {things} } = useSuspenseQuery(get{Thing}sQueryOptions())
-  
+
   return <DataTable columns={columns} data={{things}.data} />
 }
 
