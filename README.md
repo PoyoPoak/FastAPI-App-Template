@@ -182,7 +182,7 @@ This includes using Docker Compose, custom local domains, `.env` configurations,
 
 ## Release Notes
 
-Check the file [release-notes.md](./docs/template-release-notes.md).
+Check the file [release-notes.md](./release-notes.md).
 
 ## License
 
